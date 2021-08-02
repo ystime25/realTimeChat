@@ -28,12 +28,22 @@ const sockets = [];
 
 wss.on("connection", (socket) => {
   sockets.push(socket);
+  socket["nickname"] = "Anon";
   console.log("Browser Connection Confirmed ✅");
   socket.on("close", () => {
     console.log("Browser Disconnected 🛑");
   });
   socket.on("message", (message) => {
-    sockets.forEach((aSocket) => aSocket.send(message));
+    const msg = JSON.parse(message);
+    switch (msg.type) {
+      case "new_msg":
+        sockets.forEach((aSocket) =>
+          aSocket.send(`${socket.nickname}: ${msg.payload}`)
+        );
+        break;
+      case "nickname":
+        socket["nickname"] = msg.payload;
+    }
   });
 });
 

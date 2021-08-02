@@ -12,6 +12,10 @@ html(lang="kr")
     body 
         header Chat with Ming
         main 
+            form#nicknameForm
+                input(type="text" placeholder="대화명 설정" required)
+                button
+                    i.fas.fa-save
             form#messageForm
                 ul#messageList 
                 input(type="text" placeholder="메시지 보내기" required)
