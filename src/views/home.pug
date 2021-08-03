@@ -16,5 +16,12 @@ html(lang="kr")
                  form
                     input(type="text", placeholder="채팅방 이름입력", required)
                     button 입장
+            div#room
+                h3
+                ul 
+                form
+                    input(type="text", placeholder="메세지 입력", required)
+                    button 
+                        i.fas.fa-paper-plane
         script(src="/socket.io/socket.io.js")   
         script(src="/public/js/app.js")
