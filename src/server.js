@@ -18,22 +18,29 @@ app.use(logger("dev"));
 app.get("/", (req, res) => res.render("home"));
 app.get("/*", (req, res) => res.redirect("/"));
 
-const handleListen = () => {
-  console.log(`Server Online => http://localhost:${PORT} ✅`);
-};
-
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
 wsServer.on("connection", (socket) => {
+  socket["nickname"] = "Anon";
   socket.onAny((event) => {
     console.log(`Socket Event: ${event}`);
   });
   socket.on("enter_room", (roomName, done) => {
     socket.join(roomName);
     done();
-    socket.to(roomName).emit("joinNoti");
+    socket.to(roomName).emit("joinNoti", socket.nickname);
   });
+  socket.on("disconnecting", () => {
+    socket.rooms.forEach((room) =>
+      socket.to(room).emit("exitNoti", socket.nickname)
+    );
+  });
+  socket.on("new_message", (msg, room, done) => {
+    socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
+    done();
+  });
+  socket.on("new_nickname", (nickname) => (socket["nickname"] = nickname));
 });
 
 //WebSocket way
@@ -60,5 +67,7 @@ wss.on("connection", (socket) => {
     }
   });
 });*/
-
+const handleListen = () => {
+  console.log(`Server Online => http://localhost:${PORT} ✅`);
+};
 httpServer.listen(PORT, handleListen);

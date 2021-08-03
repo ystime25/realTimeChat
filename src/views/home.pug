@@ -13,15 +13,19 @@ html(lang="kr")
         header Chat with Ming
         main
             div#lobby
-                 form
+                form#roomID
                     input(type="text", placeholder="채팅방 이름입력", required)
                     button 입장
             div#room
                 h3
-                ul 
-                form
+                ul
+                form#msg
                     input(type="text", placeholder="메세지 입력", required)
                     button 
                         i.fas.fa-paper-plane
+                form#nick
+                    input(type="text", placeholder="대화명 입력", required)
+                    button 
+                        i.fas.fa-user-edit
         script(src="/socket.io/socket.io.js")   
         script(src="/public/js/app.js")
