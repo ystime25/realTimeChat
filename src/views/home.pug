@@ -11,14 +11,10 @@ html(lang="kr")
         
     body 
         header Chat with Ming
-        main 
-            form#nicknameForm
-                input(type="text" placeholder="대화명 설정" required)
-                button
-                    i.fas.fa-save
-            form#messageForm
-                ul#messageList 
-                input(type="text" placeholder="메시지 보내기" required)
-                button
-                    i.fas.fa-paper-plane
+        main
+            div#lobby
+                 form
+                    input(type="text", placeholder="채팅방 이름입력", required)
+                    button 입장
+        script(src="/socket.io/socket.io.js")   
         script(src="/public/js/app.js")

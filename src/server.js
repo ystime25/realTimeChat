@@ -1,5 +1,6 @@
 import "dotenv/config";
-import WebSocket from "ws";
+//import WebSocket from "ws";
+import SocketIO from "socket.io";
 import http from "http";
 import express from "express";
 import logger from "morgan";
@@ -21,11 +22,19 @@ const handleListen = () => {
   console.log(`Server Online => http://localhost:${PORT} ✅`);
 };
 
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
+const wsServer = SocketIO(httpServer);
+
+wsServer.on("connection", (socket) => {
+  socket.on("enter_room", (roomName) => {
+    console.log(roomName);
+  });
+});
+
+//WebSocket way
+/*
 const wss = new WebSocket.Server({ server });
-
 const sockets = [];
-
 wss.on("connection", (socket) => {
   sockets.push(socket);
   socket["nickname"] = "Anon";
@@ -45,6 +54,6 @@ wss.on("connection", (socket) => {
         socket["nickname"] = msg.payload;
     }
   });
-});
+});*/
 
-server.listen(PORT, handleListen);
+httpServer.listen(PORT, handleListen);
