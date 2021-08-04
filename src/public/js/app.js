@@ -53,11 +53,15 @@ const handleEnterRoom = (event) => {
 
 lobby_form.addEventListener("submit", handleEnterRoom);
 
-socket.on("joinNoti", (user) => {
+socket.on("joinNoti", (user, newCount) => {
+  const h3 = room.querySelector("h3");
+  h3.innerText = `${roomName} (${newCount})`;
   addMessage(`${user} joined`);
 });
 
-socket.on("exitNoti", (left) => {
+socket.on("exitNoti", (left, newCount) => {
+  const h3 = room.querySelector("h3");
+  h3.innerText = `${roomName} (${newCount})`;
   addMessage(`${left}, left`);
 });
 
